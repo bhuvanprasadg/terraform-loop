@@ -10,10 +10,10 @@ apply:
 	cd env && aws-vault exec wal -- terraform apply dev.tfplan
 
 destroy-plan: 
-	cd env && aws-vault exec wal -- terraform plan -destroy --var-file=dev.tfvars -out=dev-destroy.tfplan
+	cd env && aws-vault exec wal --no-session -- terraform plan -destroy --var-file=dev.tfvars -out=dev-destroy.tfplan
 
 destroy-apply: 
-	cd env && aws-vault exec wal -- terraform apply dev-destroy.tfplan
+	cd env && aws-vault exec wal --no-session -- terraform apply dev-destroy.tfplan
 
 plan-admin: 
 	cd env && aws-vault exec wal --no-session -- terraform plan --var-file=dev.tfvars -out=dev.tfplan
