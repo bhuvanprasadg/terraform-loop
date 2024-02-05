@@ -1,4 +1,4 @@
-.PHONY: init plan apply destroy-plan destroy-apply
+.PHONY: init plan apply destroy-plan destroy-apply apply-admin
 
 init:
 	cd env && aws-vault exec wal -- terraform init
@@ -14,3 +14,9 @@ destroy-plan:
 
 destroy-apply: 
 	cd env && aws-vault exec wal -- terraform apply dev-destroy.tfplan
+
+plan-admin: 
+	cd env && aws-vault exec wal --no-session -- terraform plan --var-file=dev.tfvars -out=dev.tfplan
+
+apply-admin:
+	cd env && aws-vault exec wal --no-session -- terraform apply "dev.tfplan"
