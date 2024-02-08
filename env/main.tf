@@ -2,7 +2,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.0"
+      version = "~> 5.0"
     }
   }
 }
@@ -79,4 +79,21 @@ module "eks_nodegroups" {
   vpc_id                          = var.vpc_id
   private_subnet_ids              = module.private_subnets.private_subnet_ids
   eks_addons                      = var.eks_addons
+}
+
+module "eks_blueprints_addons" {
+  source  = "aws-ia/eks-blueprints-addons/aws"
+  version = "~> 1.14"
+
+  cluster_name      = var.eks_cluster_name
+  cluster_endpoint  = module.eks_cluster.eks_cluster_endpoint
+  cluster_version   = var.eks_version
+  oidc_provider_arn = module.eks_cluster.eks_oidc_arn
+
+  enable_kube_prometheus_stack        = true
+  enable_metrics_server               = true
+  enable_aws_node_termination_handler = true
+  enable_aws_load_balancer_controller = true
+  enable_external_secrets             = true
+  enable_external_dns                 = true
 }
